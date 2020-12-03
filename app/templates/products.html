@@ -1,0 +1,22 @@
+<!-- Our dynamic Jinga2 AboutMe.html -->
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div class="container">
+    <!-- Jinja for loop -->
+        {% for product in products %} 
+                <h1>Name : {{ product["name"] }} </h1>
+                <p>Price: {{ product["price"] }}</p>
+                <p>Category: {{ product["description"] }}</p>
+                <p>Category: {{ product["category"] }}</p>
+                <p>Category: {{ product["quantity"] }}</p>
+                <p>Category: {{ product["unique_tag"] }}</p>
+                <button onclick="">Mark As Sold</button>
+                <form action="{{ url_for('delete') }}" method="PUT">
+                    <input type="submit" value="Favorite">
+               </form>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
