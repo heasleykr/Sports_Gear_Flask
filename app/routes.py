@@ -35,7 +35,7 @@ def product_form():
 
     return render_template("form_example.html", form=form)
 
-@app.route("/products")
+@app.route("/products", methods=["GET"])
 def get_all_products():
     out = scan() 
     out["ok"] = True
@@ -43,31 +43,21 @@ def get_all_products():
     # return out
     return render_template("products.html", products=out["body"])
 
-#method to create a new product and add to db
-#you can add multiple request methods as params if you need. Not recommended.
-# @app.route("/products", methods=["POST"])
-# def create_product():
-#     product_data = request.json
-#     new_id = create(
-#         product_data.get("name"), #find the key "name" and set value
-#         product_data.get("price"),
-#         product_data.get("description"),
-#         product_data.get("category"),
-#         product_data.get("quantity"),
-#         product_data.get("unique_tag")
-#     )
-#     #this is returned as a JSON first, then converted to a python dictionary
-#     return {"ok": True, "message": "Success", "new_id": new_id}
+    # if request.method == "PUT":
+    #     pid = request.form.get("name")
+    #     product_data = request.json
+    #     out = update(int(pid), product_data)
+    #     return {"ok": out, "message": "Updated"}
 
-@app.route("/products/<pid>", methods=["PUT"])
-def update_product(pid):
-    product_data = request.json
-    out = update(int(pid), product_data)
-    return {"ok": out, "message": "Updated"}
+#method to delete/deactivate an entry in the DB
+# @app.route("/products/<pid>", methods=["PUT"])
+# def update_product(pid):
+#     product_data = request.json
+#     out = update(int(pid), product_data)
+#     return {"ok": out, "message": "Updated"}
 
 #the term is a 'View Route' because it returns HTML content
-@app.route('/aboutme')
-#param is the user content to be added to the string output view. '%' dynamic content 
+@app.route("/aboutme")
 def aboutme():
     return render_template("about_me.html")
 
