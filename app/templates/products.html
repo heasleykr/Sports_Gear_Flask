@@ -29,18 +29,18 @@
                 <!-- determine active product -->
                 {% if product["active"] %}
                     
+                    {% set color = '' %}
                     <!-- determine row color -->
-                    {% if 100 >= product["quantity"] %}
-                        <tr class="table-danger"> 
-
-                    {% elif 500 >= product["quantity"] %}
-                        <tr class="table-warning">
-                    
+                    {% if product["quantity"] <= 100 %}
+                        {% set color = 'background-color:red;' %}
+                    {% elif product["quantity"] <= 500 %}
+                        {% set color = 'background-color:yellow;' %}
                     {% else %}
-                        <tr class="table-success">
+                        {% set color = '' %}
                     {% endif %}
 
                             <!-- Build product row output -->
+                        <tr style='{{ color }}'>
                             <th scope="row">{{ product["id"] }}</th>
                             <td>{{ product["name"] }}</td>
                             <td>{{ product["category"] }}</td>
@@ -48,7 +48,7 @@
                             <td>{{ product["price"] }}</td>
                             <td>{{ product["description"] }}</td>
                             <td>{{ product["unique_tag"] }}</td>
-                            <td>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</td>
+                            <td><form>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</form></td>
                         </tr>
                     
                 {% endif %}
@@ -77,20 +77,18 @@
                 {% if product["active"] == False %}
 
                     <!-- determine row color -->
-                    <!-- color_Row = {{ product["quantity"] }}
-
-                    {% if 100 > color_Row %}
-                        <tr class="table-danger">
-
-                    {% elif 500 > color_Row %}
-                        <tr class="table-warning">
+                    {% set color = '' %}
+                    <!-- determine row color -->
+                    {% if product["quantity"] <= 100 %}
+                        {% set color = 'background-color:red;' %}
+                    {% elif product["quantity"] <= 500 %}
+                        {% set color = 'background-color:yellow;' %}
+                    {% else %}
+                        {% set color = '' %}
+                    {% endif %}
                     
-                    {% elif color_Row > 500 %}
-                        <tr class="table-success">
-
-                    {% endif %} -->
                             <!-- Build product row output -->
-                    <tr>
+                    <tr style='{{ color }}'>
                         <th scope="row">{{ product["id"] }}</th>
                         <td>{{ product["name"] }}</td>
                         <td>{{ product["category"] }}</td>

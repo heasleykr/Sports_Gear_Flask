@@ -58,8 +58,9 @@ def get_all_products():
         out["message"] = "Success"
         # return out
 
+        return redirect(url_for('get_all_products'))
         
-        return render_template("products.html", products=out["body"])
+        # return render_template("products.html", products=out["body"])
 
 
 #method to delete/deactivate an entry in the DB
