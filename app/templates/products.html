@@ -26,16 +26,33 @@
         <tbody>
         <!-- Jinja for loop -->
             {% for product in products %} 
+                <!-- determine active product -->
                 {% if product["active"] %}
-                    <tr>
-                        <th scope="row">{{ product["id"] }}</th>
-                        <td>{{ product["name"] }}</td>
-                        <td>{{ product["category"] }}</td>
-                        <td>{{ product["quantity"] }}</td>
-                        <td>{{ product["price"] }}</td>
-                        <td>{{ product["description"] }}</td>
-                        <td>{{ product["unique_tag"] }}</td>
-                        <td></td>
+                        <tr>
+                    {% if 100 > {{ product["quantity"] }} %}
+                    <!-- determine row color -->
+                    <!-- color_Row = {{ product["quantity"] }} -->
+
+                    <!-- {% if 100 > color_Row %}
+                        <tr class="table-danger"> 
+
+                         {% elif 500 > color_Row %}
+                        <tr class="table-warning">
+                    
+                    {% elif color_Row > 500 %}
+                        <tr class="table-success"> -->
+                        <tr class="table-warning">
+                    {% endif %}
+
+                            <!-- Build product row output -->
+                            <th scope="row">{{ product["id"] }}</th>
+                            <td>{{ product["name"] }}</td>
+                            <td>{{ product["category"] }}</td>
+                            <td>{{ product["quantity"] }}</td>
+                            <td>{{ product["price"] }}</td>
+                            <td>{{ product["description"] }}</td>
+                            <td>{{ product["unique_tag"] }}</td>
+                            <td><form action="{{ url_for('get_all_products') }}" method=put><input type=submit value=Delete name="{{ product['id'] }}"></form></td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -59,7 +76,23 @@
         <tbody>
         <!-- Jinja for loop -->
             {% for product in products %} 
+                <!-- determine deactive product -->
                 {% if product["active"] == FALSE %}
+
+                    <!-- determine row color -->
+                    color_Row = {{ product["quantity"] }}
+
+                    {% if 100 > color_Row %}
+                        <tr class="table-danger">
+
+                    {% elif 500 > color_Row %}
+                        <tr class="table-warning">
+                    
+                    {% elif color_Row > 500 %}
+                        <tr class="table-success">
+
+                    {% endif %}
+                            <!-- Build product row output -->
                     <tr>
                         <th scope="row">{{ product["id"] }}</th>
                         <td>{{ product["name"] }}</td>
@@ -68,9 +101,7 @@
                         <td>{{ product["price"] }}</td>
                         <td>{{ product["description"] }}</td>
                         <td>{{ product["unique_tag"] }}</td>
-                        <td><form action="{{ url_for('delete') }}" method="PUT">
-                            <input id="{{ product['id']}}" type="submit" value="Favorite">
-                        </form></td>
+                        <td><button id="{{ product['id'] }}">Delete</button></td>
                     </tr>
                 {% endif %}
             {% endfor %}

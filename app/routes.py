@@ -4,7 +4,7 @@
 
 from flask import request, render_template #allows interations with any requests. #renders our templates!
 from app import app
-from app.database import create, read, update, delete, scan
+from app.database import create, read, update, delete, scan, deactivate
 from datetime import datetime
 from app.forms.product import ProductForm
 
@@ -35,26 +35,42 @@ def product_form():
 
     return render_template("form_example.html", form=form)
 
-@app.route("/products", methods=["GET"])
+@app.route("/products", methods=["GET", "PUT"])
 def get_all_products():
-    out = scan() 
-    out["ok"] = True
-    out["message"] = "Success"
-    # return out
-    return render_template("products.html", products=out["body"])
+    if request.method == "GET":
+        out = scan() 
+        out["ok"] = True
+        out["message"] = "Success"
+        # return out
+        return render_template("products.html", products=out["body"])
+    
+    if request.method =="PUT":
+        pid = request.form.get["name"]
+        deactivate(pid)
 
-    # if request.method == "PUT":
-    #     pid = request.form.get("name")
-    #     product_data = request.json
-    #     out = update(int(pid), product_data)
-    #     return {"ok": out, "message": "Updated"}
+        #rerender template
+        out = scan() 
+        out["ok"] = True
+        out["message"] = "Success"
+        # return out
+        return render_template("products.html", products=out["body"])
+
 
 #method to delete/deactivate an entry in the DB
-# @app.route("/products/<pid>", methods=["PUT"])
-# def update_product(pid):
-#     product_data = request.json
-#     out = update(int(pid), product_data)
-#     return {"ok": out, "message": "Updated"}
+# @app.route("/delete", methods=["PUT"])
+# def update_product():
+    # pid = request.form.get["name"]
+    # deactivate(pid)
+    # product_data = request.json
+    # out = update(int(pid), product_data)
+    # return {"ok": out, "message": "Updated"}
+
+    #rerender template
+    # out = scan() 
+    # out["ok"] = True
+    # out["message"] = "Success"
+    # # return out
+    # return render_template("products.html", products=out["body"])
 
 #the term is a 'View Route' because it returns HTML content
 @app.route("/aboutme")
