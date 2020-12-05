@@ -4,7 +4,11 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-<form method="POST">
-    {{ wtf.quick_form(form) }}
-</form>
+<div class="container">
+    <h1>Add Gear to Our Locker!</h1>
+    <hr>
+    <form method="POST">
+        {{ wtf.quick_form(form) }}
+    </form>
+</div>
 {% endblock %}

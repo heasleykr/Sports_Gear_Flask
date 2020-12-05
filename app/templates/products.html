@@ -10,7 +10,7 @@
     <hr>
     </p>
     <!-- Active Table DB -->
-    <table class="table">
+    <table class="table table-dark">
         <thead class="thead-dark">
             <tr>
               <th scope="col">ID</th>
@@ -28,20 +28,16 @@
             {% for product in products %} 
                 <!-- determine active product -->
                 {% if product["active"] %}
-                        <tr>
-                    {% if 100 > {{ product["quantity"] }} %}
+                    
                     <!-- determine row color -->
-                    <!-- color_Row = {{ product["quantity"] }} -->
-
-                    <!-- {% if 100 > color_Row %}
+                    {% if 100 >= product["quantity"] %}
                         <tr class="table-danger"> 
 
-                         {% elif 500 > color_Row %}
+                    {% elif 500 >= product["quantity"] %}
                         <tr class="table-warning">
                     
-                    {% elif color_Row > 500 %}
-                        <tr class="table-success"> -->
-                        <tr class="table-warning">
+                    {% else %}
+                        <tr class="table-success">
                     {% endif %}
 
                             <!-- Build product row output -->
@@ -52,8 +48,9 @@
                             <td>{{ product["price"] }}</td>
                             <td>{{ product["description"] }}</td>
                             <td>{{ product["unique_tag"] }}</td>
-                            <td><form action="{{ url_for('get_all_products') }}" method=put><input type=submit value=Delete name="{{ product['id'] }}"></form></td>
-                    </tr>
+                            <td>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</td>
+                        </tr>
+                    
                 {% endif %}
             {% endfor %}
         </tbody>
@@ -77,10 +74,10 @@
         <!-- Jinja for loop -->
             {% for product in products %} 
                 <!-- determine deactive product -->
-                {% if product["active"] == FALSE %}
+                {% if product["active"] == False %}
 
                     <!-- determine row color -->
-                    color_Row = {{ product["quantity"] }}
+                    <!-- color_Row = {{ product["quantity"] }}
 
                     {% if 100 > color_Row %}
                         <tr class="table-danger">
@@ -91,7 +88,7 @@
                     {% elif color_Row > 500 %}
                         <tr class="table-success">
 
-                    {% endif %}
+                    {% endif %} -->
                             <!-- Build product row output -->
                     <tr>
                         <th scope="row">{{ product["id"] }}</th>
@@ -115,3 +112,4 @@
     <button id="{{ product['id']}}" type="submit" value="Favorite">
 </form> -->
 
+<!-- <td><form action="{{ url_for('get_all_products') }}" method=put><input type=submit value=Delete name="{{ product['id'] }}"></form></td> -->

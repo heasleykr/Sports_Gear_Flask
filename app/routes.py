@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 """ HTTP route definitions """
 
-from flask import request, render_template #allows interations with any requests. #renders our templates!
+from flask import request, render_template, redirect, url_for #allows interations with any requests. #renders our templates!
 from app import app
 from app.database import create, read, update, delete, scan, deactivate
 from datetime import datetime
@@ -33,6 +33,10 @@ def product_form():
         
     form = ProductForm()
 
+    #rerender form on successful submission
+    if form.validate_on_submit():
+        return redirect(url_for('product_form'))
+
     return render_template("form_example.html", form=form)
 
 @app.route("/products", methods=["GET", "PUT"])
@@ -45,14 +49,16 @@ def get_all_products():
         return render_template("products.html", products=out["body"])
     
     if request.method =="PUT":
-        pid = request.form.get["name"]
-        deactivate(pid)
+        pid = request.form.get["id"]
+        update(pid, "active", "False")
 
         #rerender template
         out = scan() 
         out["ok"] = True
         out["message"] = "Success"
         # return out
+
+        
         return render_template("products.html", products=out["body"])
 
 
