@@ -85,16 +85,6 @@ def create(name, price, description, category, quantity, unique_tag):
     cursor.commit()
     return last_row_id #return the automatically generated 'id'
 
-
-
-#Soft Delete for products
-def deactivate(prod_id):
-    query = "UPDATE product SET active = FALSE WHERE id=%s" % prod_id
-    cursor = get_db()
-    cursor.execute(query, ())
-    cursor.commit()
-    return True
-
 #not recommended because most companies want to keep all code. 
 #typically deactivation of columns happens. 
 def delete(prod_id):

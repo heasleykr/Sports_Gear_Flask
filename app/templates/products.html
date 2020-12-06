@@ -48,7 +48,7 @@
                             <td>{{ product["price"] }}</td>
                             <td>{{ product["description"] }}</td>
                             <td>{{ product["unique_tag"] }}</td>
-                            <td><form>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</form></td>
+                            <td><form method="PUT" name="deactivate" id="{{ product['id'] }}">{{ wtf.quick_form(form) }}</form></td>
                         </tr>
                     
                 {% endif %}
@@ -86,7 +86,7 @@
                     {% else %}
                         {% set color = '' %}
                     {% endif %}
-                    
+
                             <!-- Build product row output -->
                     <tr style='{{ color }}'>
                         <th scope="row">{{ product["id"] }}</th>
@@ -96,7 +96,7 @@
                         <td>{{ product["price"] }}</td>
                         <td>{{ product["description"] }}</td>
                         <td>{{ product["unique_tag"] }}</td>
-                        <td><button id="{{ product['id'] }}">Delete</button></td>
+                        <td><form method="PUT">{{ wtf.quick_form(form_A) }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -111,3 +111,9 @@
 </form> -->
 
 <!-- <td><form action="{{ url_for('get_all_products') }}" method=put><input type=submit value=Delete name="{{ product['id'] }}"></form></td> -->
+
+
+<!-- Last used -->
+<!-- <form>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</form> -->
+
+<!-- <td><form method="PUT" action="/products"><input id="{{ product['id'] }}"type="submit" name="deactivate" value="deactivate"></form></td> -->

@@ -4,9 +4,10 @@
 
 from flask import request, render_template, redirect, url_for #allows interations with any requests. #renders our templates!
 from app import app
-from app.database import create, read, update, delete, scan, deactivate
+from app.database import create, read, update, delete, scan
 from datetime import datetime
 from app.forms.product import ProductForm
+from app.forms.deactivate import DeleteProduct, ActivateProduct
 
 
 
@@ -42,42 +43,49 @@ def product_form():
 @app.route("/products", methods=["GET", "PUT"])
 def get_all_products():
     if request.method == "GET":
-        out = scan() 
-        out["ok"] = True
-        out["message"] = "Success"
-        # return out
-        return render_template("products.html", products=out["body"])
+
+        form = DeleteProduct()
+        form_A = ActivateProduct()
+
+        if 'deactivate' in request.form:
+
+            pid = request.form.get["id"]
+            update(pid, {"active": False})
+
+            #rerender template
+            return redirect(url_for('get_all_products'))
+
+        elif 'activate' in request.form:
+            pid = request.form.get["id"]
+
+            update(pid, {"active": True})
+
+            #rerender template
+            return redirect(url_for('get_all_products'))
+        else:
+            out = scan() 
+            out["ok"] = True
+            out["message"] = "Success"
+            # return out
+            return render_template("products.html", products=out["body"], form=form, form_A=form_A)
     
-    if request.method =="PUT":
-        pid = request.form.get["id"]
-        update(pid, "active", "False")
+    elif request.method == "PUT":
+        if 'deactivate' in request.form:
 
-        #rerender template
-        out = scan() 
-        out["ok"] = True
-        out["message"] = "Success"
-        # return out
+            pid = request.form.get["id"]
+            update(pid, {"active": False})
 
-        return redirect(url_for('get_all_products'))
+            #rerender template
+            return redirect(url_for('get_all_products'))
+
+        elif 'activate' in request.form:
+            pid = request.form.get["id"]
+
+            update(pid, {"active": True})
+
+            #rerender template
+            return redirect(url_for('get_all_products'))
         
-        # return render_template("products.html", products=out["body"])
-
-
-#method to delete/deactivate an entry in the DB
-# @app.route("/delete", methods=["PUT"])
-# def update_product():
-    # pid = request.form.get["name"]
-    # deactivate(pid)
-    # product_data = request.json
-    # out = update(int(pid), product_data)
-    # return {"ok": out, "message": "Updated"}
-
-    #rerender template
-    # out = scan() 
-    # out["ok"] = True
-    # out["message"] = "Success"
-    # # return out
-    # return render_template("products.html", products=out["body"])
 
 #the term is a 'View Route' because it returns HTML content
 @app.route("/aboutme")
