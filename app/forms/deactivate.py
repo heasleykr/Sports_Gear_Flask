@@ -4,12 +4,13 @@
 
 
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, Label
+from wtforms import SubmitField
+# from wtforms import SubmitField, QuerySelectField
 
 class DeleteProduct(FlaskForm):
-    id = Label
+    # id = QuerySelectField.('prod_id', validators=[Required()])
     submit = SubmitField("Delete")
 
 class ActivateProduct(FlaskForm):
-    id = 
+    # id = 
     submit = SubmitField("Un-Delete")

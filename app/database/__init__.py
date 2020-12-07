@@ -68,6 +68,20 @@ def update(prod_id, fields: dict):
     cursor.commit()
     return True
 
+# METHOD TO DEACTIVATE COL 'active'
+def softdelete(prod_id, value):
+
+    if value == 1:
+        query = "UPDATE product SET active=FALSE WHERE id=%s" % prod_id
+    else:
+        query = "UPDATE product SET active=TRUE WHERE id=%s" % prod_id
+
+    cursor = get_db()
+    cursor.execute(query)
+    cursor.commit()
+
+    return query
+
 def create(name, price, description, category, quantity, unique_tag):
     value_tuple = (name, price, description, category, quantity, unique_tag)
     query = """

@@ -6,7 +6,10 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 
-app = Flask(__name__)
+
+STATIC_DIR = ('/static/')
+
+app = Flask(__name__, static_folder=STATIC_DIR)
 Bootstrap(app)
 app.config["SECRET_KEY"] = "MYSUPERSECRETSTRING"
 

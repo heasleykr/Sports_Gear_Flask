@@ -4,42 +4,91 @@
 
 {% block content %}
 <div class="container">
-    <h1>Gear Locker</h1>
-    <h3>Items are color-coded by quantity</h3>
-    <p>Have a look around and take what you need off the shelves to up your game.
-    <hr>
-    </p>
-    <!-- Active Table DB -->
-    <table class="table table-dark">
-        <thead class="thead-dark">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Gear</th>
-              <th scope="col">Category</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
-              <th scope="col">Description</th>
-              <th scope="col">Classification</th>
-              <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <!-- Jinja for loop -->
-            {% for product in products %} 
-                <!-- determine active product -->
-                {% if product["active"] %}
-                    
-                    {% set color = '' %}
-                    <!-- determine row color -->
-                    {% if product["quantity"] <= 100 %}
-                        {% set color = 'background-color:red;' %}
-                    {% elif product["quantity"] <= 500 %}
-                        {% set color = 'background-color:yellow;' %}
-                    {% else %}
+    <body id="productsMain">
+        <h1>Gear Locker</h1>
+        <h3>Items are color-coded by quantity</h3>
+        <p>Have a look around and take what you need off the shelves to up your game.
+        <hr>
+        </p>
+        <!-- Active Table DB -->
+        <table id="trial" class="table table-dark">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Gear</th>
+                <th scope="col">Category</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Classification</th>
+                <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Jinja for loop -->
+                {% for product in products %} 
+                    <!-- determine active product -->
+                    {% if product["active"] %}
+                        
                         {% set color = '' %}
-                    {% endif %}
+                        <!-- determine row color -->
+                        {% if product["quantity"] <= 100 %}
+                            {% set color = 'background-color:red;' %}
+                        {% elif product["quantity"] <= 500 %}
+                            {% set color = 'background-color:yellow;' %}
+                        {% else %}
+                            {% set color = '' %}
+                        {% endif %}
 
-                            <!-- Build product row output -->
+                                <!-- Build product row output -->
+                            <tr style='{{ color }}'>
+                                <th scope="row" id="prod_id">{{ product["id"] }}</th>
+                                <td>{{ product["name"] }}</td>
+                                <td>{{ product["category"] }}</td>
+                                <td>{{ product["quantity"] }}</td>
+                                <td>{{ product["price"] }}</td>
+                                <td>{{ product["description"] }}</td>
+                                <td>{{ product["unique_tag"] }}</td>
+                                <td><button><a href="products/{{product['id']}}/1" >Delete</a></button></td>
+                            </tr>
+                        
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- DeActivated 'Deleted' DB Table -->
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Gear</th>
+                <th scope="col">Category</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Classification</th>
+                <th scope="col">Un-Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Jinja for loop -->
+                {% for product in products %} 
+                    <!-- determine deactive product -->
+                    {% if product["active"] == False %}
+
+                        <!-- determine row color -->
+                        {% set color = '' %}
+                        <!-- determine row color -->
+                        {% if product["quantity"] <= 100 %}
+                            {% set color = 'background-color:red;' %}
+                        {% elif product["quantity"] <= 500 %}
+                            {% set color = 'background-color:yellow;' %}
+                        {% else %}
+                            {% set color = '' %}
+                        {% endif %}
+
+                                <!-- Build product row output -->
                         <tr style='{{ color }}'>
                             <th scope="row">{{ product["id"] }}</th>
                             <td>{{ product["name"] }}</td>
@@ -48,72 +97,14 @@
                             <td>{{ product["price"] }}</td>
                             <td>{{ product["description"] }}</td>
                             <td>{{ product["unique_tag"] }}</td>
-                            <td><form method="PUT" name="deactivate" id="{{ product['id'] }}">{{ wtf.quick_form(form) }}</form></td>
+                            <td><button><a href="products/{{product['id']}}/0" >Recover Gear</a></button></td>
                         </tr>
-                    
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- DeActivated 'Deleted' DB Table -->
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Gear</th>
-              <th scope="col">Category</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
-              <th scope="col">Description</th>
-              <th scope="col">Classification</th>
-              <th scope="col">Un-Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <!-- Jinja for loop -->
-            {% for product in products %} 
-                <!-- determine deactive product -->
-                {% if product["active"] == False %}
-
-                    <!-- determine row color -->
-                    {% set color = '' %}
-                    <!-- determine row color -->
-                    {% if product["quantity"] <= 100 %}
-                        {% set color = 'background-color:red;' %}
-                    {% elif product["quantity"] <= 500 %}
-                        {% set color = 'background-color:yellow;' %}
-                    {% else %}
-                        {% set color = '' %}
                     {% endif %}
-
-                            <!-- Build product row output -->
-                    <tr style='{{ color }}'>
-                        <th scope="row">{{ product["id"] }}</th>
-                        <td>{{ product["name"] }}</td>
-                        <td>{{ product["category"] }}</td>
-                        <td>{{ product["quantity"] }}</td>
-                        <td>{{ product["price"] }}</td>
-                        <td>{{ product["description"] }}</td>
-                        <td>{{ product["unique_tag"] }}</td>
-                        <td><form method="PUT">{{ wtf.quick_form(form_A) }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
 </div>
 {% endblock %}
 
 
-<!-- <form action="{{ url_for('delete') }}" method="PUT">
-    <button id="{{ product['id']}}" type="submit" value="Favorite">
-</form> -->
-
-<!-- <td><form action="{{ url_for('get_all_products') }}" method=put><input type=submit value=Delete name="{{ product['id'] }}"></form></td> -->
-
-
-<!-- Last used -->
-<!-- <form>{{ wtf.form_button(url_for('get_all_products', id=product['id']), "Delete", method='PUT', class='btn-link') }}</form> -->
-
-<!-- <td><form method="PUT" action="/products"><input id="{{ product['id'] }}"type="submit" name="deactivate" value="deactivate"></form></td> -->

@@ -4,7 +4,7 @@
 
 from flask import request, render_template, redirect, url_for #allows interations with any requests. #renders our templates!
 from app import app
-from app.database import create, read, update, delete, scan
+from app.database import create, read, update, delete, scan, softdelete
 from datetime import datetime
 from app.forms.product import ProductForm
 from app.forms.deactivate import DeleteProduct, ActivateProduct
@@ -85,7 +85,19 @@ def get_all_products():
 
             #rerender template
             return redirect(url_for('get_all_products'))
-        
+
+#ROUTE TO DEACTIVATE/ACTIVE PRODUCT> Help & Credit from: Jesus Camarena        
+@app.route("/products/<pid>/<value>", methods=["GET"])
+def delete_product(pid, value):
+
+    out = softdelete(int(pid), int(value))
+
+    #out = scan()
+
+    #rerender template
+    return redirect(url_for('get_all_products')) 
+    
+
 
 #the term is a 'View Route' because it returns HTML content
 @app.route("/aboutme")
